@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
+from .models import *
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
@@ -28,4 +28,29 @@ def user_logout(request):
     logout(request)
     return redirect("login") #Redirect to login page
 
-#def signup(request):
+def user_signup(request):
+    if request.method ="POST":
+        username = request.POST['username']
+        password =request.POST['password1']
+        password2=request.POST['password2']
+        email = request.POST['email']
+        phone_no = request.POST["phone_no"]
+
+
+        if password != password2:
+            return render("sign_up.html"{"error":"password do not match"})
+
+        if CUSTOMUSER.objects.filter(email=email).exits():
+            return render("sign_up.html"{"error":"email already exists"})
+
+        user = CustomUser.objects.create_user(
+            username=username,
+            email=email,
+            phone_no=phone_no,
+            password=password
+        )
+
+        login(request,user)
+        return redirect('quiz_view') # quiz_view will be the view of quizes after signup
+
+    return render(request,"sign_up.html")
