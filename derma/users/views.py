@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -22,7 +23,6 @@ def user_login(request):
             messages.error(request, "Invalid username or password")
 
     return render(request, "login.html")
-
 
 def user_logout(request):
     logout(request)
@@ -54,3 +54,32 @@ def user_signup(request):
         return redirect('quiz_view') # quiz_view will be the view of quizes after signup
 
     return render(request,"sign_up.html")
+
+# Changes by RONIN
+@login_required
+def submit_quiz(request):
+    if request.method == "POST":
+        QuizResponse.objects.create(
+            user=request.user,
+            primary_skin_concern=request.POST.get("primary_skin_concern"),
+            skin_type=request.POST.get("skin_type"),
+            breakout_frequency=request.POST.get("breakout_frequency"),
+            reaction_to_skincare=request.POST.get("reaction_to_skincare"),
+            redness_inflammation=request.POST.get("redness_inflammation"),
+            sunscreen_usage=request.POST.get("sunscreen_usage"),
+            skin_conditions=request.POST.get("skin_conditions"),
+            after_washing_skin_feel=request.POST.get("after_washing_skin_feel"),
+            water_intake=request.POST.get("water_intake"),
+            dark_spots_pigmentation=request.POST.get("dark_spots_pigmentation"),
+            visible_pores=request.POST.get("visible_pores"),
+            exfoliation_frequency=request.POST.get("exfoliation_frequency"),
+            fine_lines_wrinkles=request.POST.get("fine_lines_wrinkles"),
+            dairy_processed_food_intake=request.POST.get("dairy_processed_food_intake"),
+            skincare_routine=request.POST.get("skincare_routine"),
+        )
+        messages.success(request, "Quiz submitted successfully!")
+        return redirect("quiz_report")  # Redirect to a report or homepage
+
+    return render(request, "users/quiz_form.html")
+
+#

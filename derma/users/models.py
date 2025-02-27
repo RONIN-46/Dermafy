@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
-
+from django.contrib.auth import get_user_model
 
 
 class CUSTOMUSER(AbstractUser):
@@ -15,46 +15,37 @@ class PROFILE(models.MODEL):
             ("Female","female"),
             ("Other","other"),
             ]
-    image = models.ImageField(upload_to= "/profile_pic",default = )
+    image = models.ImageField(upload_to= "/profile_pic")
     name = models.CharField(max_length =230, null =True, Blank =True)
     age = models.CharField(max_length = 3)
     gender = models.CharField(max_length =10, choices =GENDER)
     user = models.ForeignKey(CUSTOMUSER,on_delete=models.CASCADE,related_name="profile",db_index=True)
     
 # Changes from here, Direct Chatgpt
-class Quiz(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="quizzes")
-    created_at = models.DateTimeField(auto_now_add=True)
+User = get_user_model()  # Use CUSTOMUSER
 
-    def __str__(self):
-        return self.title
+class QuizResponse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="quiz_responses")
+    
+    primary_skin_concern = models.CharField(max_length=100)
+    skin_type = models.CharField(max_length=50)
+    breakout_frequency = models.CharField(max_length=50)
+    reaction_to_skincare = models.CharField(max_length=100)
+    redness_inflammation = models.CharField(max_length=100)
+    sunscreen_usage = models.CharField(max_length=100)
+    skin_conditions = models.CharField(max_length=100)
+    after_washing_skin_feel = models.CharField(max_length=100)
+    water_intake = models.CharField(max_length=50)
+    dark_spots_pigmentation = models.CharField(max_length=100)
+    visible_pores = models.CharField(max_length=100)
+    exfoliation_frequency = models.CharField(max_length=50)
+    fine_lines_wrinkles = models.CharField(max_length=100)
+    dairy_processed_food_intake = models.CharField(max_length=100)
+    skincare_routine = models.CharField(max_length=100)
 
-class Question(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="questions")
-    text = models.TextField()
-
-    def __str__(self):
-        return self.text
-
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="choices")
-    text = models.CharField(max_length=255)
-    is_correct = models.BooleanField(default=False)  # Mark correct answers
-
-    def __str__(self):
-        return self.text
-
-class UserResponse(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    selected_choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
-    is_correct = models.BooleanField(default=False)
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.quiz.title} - {self.question.text}"
+        return f"{self.user.username} - Quiz Response {self.id}"
 
 # Upto here
