@@ -19,5 +19,6 @@ class PROFILE(models.MODEL):
     name = models.CharField(max_length =230, null =True, Blank =True)
     age = models.CharField(max_length = 3)
     gender = models.CharField(max_length =10, choices =GENDER)
+    birthdate = models.DateField()
     user = models.ForeignKey(CUSTOMUSER,on_delete=models.CASCADE,related_name="profile",db_index=True)
     
