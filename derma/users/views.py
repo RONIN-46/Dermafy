@@ -17,7 +17,7 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect("home")
+            return redirect("dash_board")#dasboard funtion write the blo0ody thing prayag
         else:
             messages.error(request, "Invalid username or password")
 
