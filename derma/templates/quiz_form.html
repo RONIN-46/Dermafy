@@ -1,0 +1,31 @@
+<form method="POST">
+    {% csrf_token %}
+    
+    <label>What is your primary skin concern?</label>
+    <select name="primary_skin_concern">
+        <option value="a">Acne (Pimples, blackheads, whiteheads)</option>
+        <option value="b">Dryness (Flaky, rough patches, tight skin)</option>
+        <option value="c">Redness & sensitivity (Burning, irritation, inflammation)</option>
+        <option value="d">Dark spots & uneven skin tone</option>
+    </select>
+
+    <label>What is your skin type?</label>
+    <select name="skin_type">
+        <option value="a">Oily</option>
+        <option value="b">Dry</option>
+        <option value="c">Combination (Oily in some areas, dry in others)</option>
+        <option value="d">Normal</option>
+    </select>
+
+    <label>How often do you experience breakouts?</label>
+    <select name="breakout_frequency">
+        <option value="a">Rarely (1-2 pimples a month)</option>
+        <option value="b">Occasionally (3-5 pimples a month)</option>
+        <option value="c">Frequently (Breakouts every week)</option>
+        <option value="d">Severe (Painful, cystic acne all over the face)</option>
+    </select>
+
+    <!-- Add similar dropdowns for other questions -->
+
+    <button type="submit">Submit Quiz</button>
+</form>
