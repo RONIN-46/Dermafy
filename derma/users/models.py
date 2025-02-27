@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
-from django.contrib.auth import get_user_model
 
 
 class CUSTOMUSER(AbstractUser):
@@ -9,23 +8,22 @@ class CUSTOMUSER(AbstractUser):
     def __str__(self):
         return self.username
 
-class PROFILE(models.MODEL):
+class PROFILE(models.Model):
     GENDER =[
             ("Male","male"),
             ("Female","female"),
             ("Other","other"),
             ]
-    image = models.ImageField(upload_to= "/profile_pic")
-    name = models.CharField(max_length =230, null =True, Blank =True)
+    image = models.ImageField(upload_to= "profile_pic/")
+    name = models.CharField(max_length =230, null =True, blank =True)
     age = models.CharField(max_length = 3)
     gender = models.CharField(max_length =10, choices =GENDER)
     user = models.ForeignKey(CUSTOMUSER,on_delete=models.CASCADE,related_name="profile",db_index=True)
     
 # Changes from here, Direct Chatgpt
-User = get_user_model()  # Use CUSTOMUSER
 
 class QuizResponse(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="quiz_responses")
+    user = models.ForeignKey(CUSTOMUSER, on_delete=models.CASCADE, related_name="quiz_responses")
     
     primary_skin_concern = models.CharField(max_length=100)
     skin_type = models.CharField(max_length=50)

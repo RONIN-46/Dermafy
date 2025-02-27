@@ -51,7 +51,7 @@ def user_signup(request):
         )
 
         login(request,user)
-        return redirect('quiz_view') # quiz_view will be the view of quizes after signup
+        return redirect('submit_quiz') # quiz_view will be the view of quizes after signup
 
     return render(request,"sign_up.html")
 
@@ -80,6 +80,6 @@ def submit_quiz(request):
         messages.success(request, "Quiz submitted successfully!")
         return redirect("quiz_report")  # Redirect to a report or homepage
 
-    return render(request, "users/quiz_form.html")
+    return render(request, "quiz_form.html")
 
 #
