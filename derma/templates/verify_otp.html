@@ -1,0 +1,12 @@
+<h2>Verify OTP</h2>
+<form method="POST">
+    {% csrf_token %}
+    <label>Email:</label>
+    <input type="email" name="email" required>
+    <label>OTP:</label>
+    <input type="text" name="otp" required>
+    <button type="submit">Verify</button>
+</form>
+{% for message in messages %}
+    <p style="color: red;">{{ message }}</p>
+{% endfor %}

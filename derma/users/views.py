@@ -6,6 +6,10 @@ from django.http import HttpResponse
 from .forms import UserProfileForm
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
+from django.contrib import messages
+from .utils import send_otp_email
+
 
 # Create your views here.
 
@@ -105,4 +109,40 @@ def submit_quiz(request):
 
     return render(request, "quiz_form.html")
 
-#
+#otp
+User = get_user_model()
+
+def request_otp(request):
+    """Request OTP for authentication"""
+    if request.method == "POST":
+        email = request.POST.get("email")
+        try:
+            user = User.objects.get(email=email)
+            send_otp_email(user)
+            messages.success(request, "OTP sent to your email.")
+            return redirect("verify_otp")
+        except User.DoesNotExist:
+            messages.error(request, "User with this email does not exist.")
+    
+    return render(request, "request_otp.html")
+
+def verify_otp(request):
+    """Verify OTP entered by user"""
+    if request.method == "POST":
+        email = request.POST.get("email")
+        otp_code = request.POST.get("otp")
+
+        try:
+            user = User.objects.get(email=email)
+            otp = OTP.objects.filter(user=user, code=otp_code).first()
+
+            if otp and otp.is_valid():
+                messages.success(request, "OTP Verified! You are logged in.")
+                otp.delete()  
+                return redirect("dashboard")
+            else:
+                messages.error(request, "Invalid or expired OTP.")
+        except User.DoesNotExist:
+            messages.error(request, "User does not exist.")
+    
+    return render(request, "verify_otp.html")

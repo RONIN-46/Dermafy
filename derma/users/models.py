@@ -1,5 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
+import random
+import string
+from django.contrib.auth import get_user_model
+from django.utils.timezone import now, timedelta
 
 
 class CUSTOMUSER(AbstractUser):
@@ -48,3 +52,15 @@ class QuizResponse(models.Model):
         return f"{self.user.username} - Quiz Response {self.id}"
 
 # Upto here
+User = get_user_model()
+
+class OTP(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_valid(self):
+        return now() < self.created_at + timedelta(minutes=5)  # OTP expires in 5 minutes
+
+    def __str__(self):
+        return f"OTP for {self.user.username}: {self.code}"
