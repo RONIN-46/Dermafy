@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 
+from .aux import *
+
 
 def home(request):
     return render(request, "index.html")
@@ -154,4 +156,57 @@ def delete_profile(request, pk):
 def profile_detail(request, pk):
     profile = get_object_or_404(PROFILE, pk=pk)
     return render(request, 'profile_detail.html', {'profile': profile})
+
+def request_reset_otp(request):
+    """View to request an OTP for password reset"""
+    if request.method == "POST":
+        email = request.POST.get("email")
+        send_otp_mail(request, email)
+        messages.success(request, "An OTP has been sent to your email.")
+        return redirect("verify_reset_otp")
+    
+    return render(request, "request_reset_otp.html")
+
+def verify_reset_otp(request):
+    """View to verify the OTP"""
+    if request.method == "POST":
+        user_otp = request.POST.get("otp")
+        is_valid, message, email = validate_otp(request, user_otp)
+
+        if is_valid:
+            messages.success(request, "OTP verified. You may now reset your password.")
+            return redirect("reset_password")  # Redirect to password reset page
+
+        messages.error(request, message)  # Show error message
+
+    return render(request, "verify_reset_otp.html")
+
+def reset_password(request):
+    """View to reset password after successful OTP verification"""
+    if request.method == "POST":
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+        email = request.session.get("user_email")
+
+        if not email:
+            messages.error(request, "Session expired. Request a new OTP.")
+            return redirect("request_reset_otp")
+
+        if new_password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect("reset_password")
+
+        # Reset the user's password
+        
+        user = CUSTOMUSER.objects.filter(email=email).first()
+        if user:
+            user.set_password(new_password)
+            user.save()
+            clear_otp(request)  # Clear session after reset
+            messages.success(request, "Password reset successfully. You can now log in.")
+            return redirect("user_login")
+
+        messages.error(request, "User not found.")
+    
+    return render(request, "reset_password.html")
 

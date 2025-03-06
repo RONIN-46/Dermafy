@@ -16,4 +16,7 @@ urlpatterns =[
         path('profile/<int:pk>/update/', update_profile, name='update_profile'),
         path('profile/<int:pk>/delete/', delete_profile, name='delete_profile'),
         path('profile/<int:pk>/', profile_detail, name='profile_detail'),
+        path("request-reset-otp/", request_reset_otp, name="request_reset_otp"),
+        path("verify-reset-otp/", verify_reset_otp, name="verify_reset_otp"),
+        path("reset-password/", reset_password, name="reset_password"),
         ]

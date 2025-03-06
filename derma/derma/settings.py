@@ -130,4 +130,15 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = '/login/'  # Change this to your actual login page URL ( kept for reference we have same login)
+LOGIN_URL = '/login/'  
+
+# Change this to your actual login page URL ( kept for reference we have same login)
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"  # Gmail SMTP server
+EMAIL_PORT = 587  # TLS Port
+EMAIL_USE_TLS = True  # Enable TLS (Secure connection)
+EMAIL_HOST_USER = "prasaddesale05@gmail.com"  
+EMAIL_HOST_PASSWORD = "#"  #security no password
+
+# Default sender email
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
