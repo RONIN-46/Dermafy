@@ -1,0 +1,21 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="image">Profile Picture:</label>
+    <input type="file" name="image" required><br>
+
+    <label for="name">Name:</label>
+    <input type="text" name="name" required><br>
+
+    <label for="age">Age:</label>
+    <input type="text" name="age" required><br>
+
+    <label for="gender">Gender:</label>
+    <select name="gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+    </select><br>
+
+    <button type="submit">Submit</button>
+</form>
+

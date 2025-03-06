@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from .models import *
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import logout, login
@@ -17,7 +17,7 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect("dash_board")#dasboard funtion write the blo0ody thing prayag
+            return redirect("dashboard")#dasboard funtion write the blo0ody thing prayag
         else:
             messages.error(request, "Invalid username or password")
 
@@ -106,4 +106,52 @@ def skincare(request):
 def consult(request):
     return render(request, 'consult.html')
 
-#
+@login_required
+def add_profile(request):
+    if request.method == "POST":
+        image = request.FILES.get('image')
+        name = request.POST.get('name')
+        age = request.POST.get('age')
+        gender = request.POST.get('gender')
+
+        profile = PROFILE.objects.create(
+            user=request.user,
+            image=image,
+            name=name,
+            age=age,
+            gender=gender
+        )
+        return redirect('profile_detail', pk=profile.pk)  # Redirect to profile detail view
+
+    return render(request, 'profile_form.html')
+
+@login_required
+def update_profile(request, pk):
+    profile = get_object_or_404(PROFILE, pk=pk, user=request.user)  # Ensure users can only edit their own profile
+
+    if request.method == "POST":
+        profile.image = request.FILES.get('image', profile.image)
+        profile.name = request.POST.get('name', profile.name)
+        profile.age = request.POST.get('age', profile.age)
+        profile.gender = request.POST.get('gender', profile.gender)
+        profile.save()
+
+        return redirect('profile_detail', pk=profile.pk)
+
+    return render(request, 'profile_form.html', {'profile': profile})
+
+@login_required
+def delete_profile(request, pk):
+    profile = get_object_or_404(PROFILE, pk=pk, user=request.user)
+
+    if request.method == "POST":
+        profile.delete()
+        return redirect('home')  # Redirect to home or profile list
+
+    return render(request, 'profile_confirm_delete.html', {'profile': profile})
+
+@login_required
+def profile_detail(request, pk):
+    profile = get_object_or_404(PROFILE, pk=pk)
+    return render(request, 'profile_detail.html', {'profile': profile})
+
