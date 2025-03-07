@@ -77,7 +77,7 @@ def submit_quiz(request):
             skincare_routine=request.POST.get("skincare_routine"),
         )
         messages.success(request, "Quiz submitted successfully!")
-        return redirect("quiz_report")  # Redirect to a report or homepage
+        return redirect("dashboard")  # Redirect to a report or homepage
 
     return render(request, "quiz_form.html")
 #
