@@ -5,8 +5,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-
-from .aux import *
+from .utils import *
 
 
 def home(request):
@@ -40,10 +39,10 @@ def user_signup(request):
         phone_no = request.POST.get("phone_no", '')
 
         if password != password2:
-            return render(request, "sign_up.html", {"error": "Passwords do not match"})
+            return render(request,"sign_up.html", {"error": "Passwords do not match"})
 
         if CUSTOMUSER.objects.filter(email=email).exists():
-            return render(request, "sign_up.html", {"error": "Email already exists"})
+            return render(request,"sign_up.html", {"error": "Email already exists"})
 
         try:
             user = CUSTOMUSER.objects.create_user(username=username, email=email, password=password)
@@ -51,7 +50,7 @@ def user_signup(request):
             user.save()
         except Exception as e:
             print(f"Error creating user: {e}")  # Debugging
-            return render(request, "sign_up.html", {"error": "User creation failed. Try again."})
+            return render( "sign_up.html", {"error": "User creation failed. Try again."})
 
         login(request, user)
         return redirect('submit_quiz')  # Ensure this matches `urls.py`
