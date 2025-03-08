@@ -1,31 +1,33 @@
-<form method="POST">
-    {% csrf_token %}
-    
-    <label>What is your primary skin concern?</label>
-    <select name="primary_skin_concern">
-        <option value="a">Acne (Pimples, blackheads, whiteheads)</option>
-        <option value="b">Dryness (Flaky, rough patches, tight skin)</option>
-        <option value="c">Redness & sensitivity (Burning, irritation, inflammation)</option>
-        <option value="d">Dark spots & uneven skin tone</option>
-    </select>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DermaNova: Skin Analysis</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/quiz_form.css' %}">
+</head>
+<body>
 
-    <label>What is your skin type?</label>
-    <select name="skin_type">
-        <option value="a">Oily</option>
-        <option value="b">Dry</option>
-        <option value="c">Combination (Oily in some areas, dry in others)</option>
-        <option value="d">Normal</option>
-    </select>
+<div class="container">
+    <div class="quiz-container" id="quiz">
+        <div class="quiz-header">
+            <h2>Skin Analysis</h2>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="progress-bar"></div>
+            </div>
+        </div>
+        <div id="question-container">
+            <p class="question" id="question"></p>
+            <div class="options" id="options"></div>
+        </div>
+        <div class="quiz-footer">
+            <button class="btn" id="next-btn">Next</button>
+        </div>
+    </div>
+</div>
 
-    <label>How often do you experience breakouts?</label>
-    <select name="breakout_frequency">
-        <option value="a">Rarely (1-2 pimples a month)</option>
-        <option value="b">Occasionally (3-5 pimples a month)</option>
-        <option value="c">Frequently (Breakouts every week)</option>
-        <option value="d">Severe (Painful, cystic acne all over the face)</option>
-    </select>
-
-    <!-- Add similar dropdowns for other questions -->
-
-    <button type="submit">Submit Quiz</button>
-</form>
+<script src="{% static 'js/quiz_form.js' %}"></script>
+</body>
+</html>
