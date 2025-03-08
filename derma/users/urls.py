@@ -12,4 +12,5 @@ urlpatterns =[
         path('skincare/', skincare, name='skincare'),
         path('consult/', consult, name='consult'),
         path('dashboard/', login_required(dashboard), name='dashboard'),
+        path("submit_quiz/", submit_quiz, name="submit_quiz"),  # Add this line
         ]
