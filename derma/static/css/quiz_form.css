@@ -1,0 +1,196 @@
+/* Importing Font from signup.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: url('/static/images/bg_flow1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh; /* Ensures it covers the full viewport */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+html {
+    height: 100%;
+    overflow: hidden; /* Prevents scrolling and image tearing */
+}
+
+
+.container {
+    width: 65%; /* Increased width */
+    padding: 60px; /* Increased padding */
+    background: transparent;
+    backdrop-filter: blur 10px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+    text-align: center;
+}
+
+.quiz-header h2 {
+    font-size: 36px; /* Increased text size */
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(248, 248, 248, 0.3); /* Better visibility */
+}
+
+/* Progress Bar */
+.progress {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    height: 15px; /* Fixed height for better visibility */
+    margin: 15px 0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #6c63ff;
+    width: 10%;
+    transition: width 0.5s ease-in-out;
+    border-radius: 6px;
+}
+
+/* Options */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center; /* Center options */
+}
+
+.option {
+    width: 70%; /* Reduced width */
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 15px;
+    font-size: 20px; /* Increased text size */
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    font-weight: 300;
+    border: 2px solid transparent;
+    text-align: center; /* Keep text centered */
+}
+
+.question{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 30px;
+    color: #ffffff;
+    padding-bottom: 10px;
+}
+
+.option:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    border-color: #6c63ff;
+}
+
+.option.selected {
+    background: #6c63ff;
+    color: white;
+    border-color: #fff;
+}
+
+/* Footer & Buttons */
+.quiz-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.btn {
+    background: #6c63ff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    text-align: justify;
+    font-size: 20px; /* Increased text size */
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.btn:hover {
+    background: #5a52d5;
+    transform: scale(1.05);
+}
+
+/* Results */
+.result-container {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    font-size: 25px; /* Increased text size */
+}
+
+.result-container p {
+    font-size: 27px; /* Increased text size */
+    font-weight: 700;
+    color: white;
+    margin-bottom: 10px;
+}
+/* ul removed - RONIN
+.result-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.result-container ul li {
+    font-size: 25px;
+    padding: 8px 0;
+    color: white;
+    position: relative;
+    padding-left: 25px;
+}
+
+
+.result-container ul li::before {
+    content: "•";
+    font-size: 26px;
+    color: #6c63ff;
+    position: absolute;
+    left: 0;
+}
+*/
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    .quiz-header h2 {
+        font-size: 28px; /* Adjusted for smaller screens */
+    }
+
+    .option {
+        font-size: 16px;
+        width: 85%; /* Make options slightly bigger on mobile */
+    }
+
+    .btn {
+        font-size: 16px;
+        padding: 10px 18px;
+    }
+}

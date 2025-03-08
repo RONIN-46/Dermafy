@@ -30,31 +30,33 @@ def user_logout(request):
     return redirect("home") #Redirect to login page
 
 def user_signup(request):
-    if request.method =="POST":
-        username = request.POST['username']
-        password =request.POST['password1']
-        password2=request.POST['password2']
-        email = request.POST['email']
-        phone_no = request.POST["phone_no"]
+    if request.method == "POST":
+        print(request.POST)  # Debugging: Check if data is correctly received
 
+        username = request.POST.get('username', '')
+        password = request.POST.get('password1', '')
+        password2 = request.POST.get('password2', '')
+        email = request.POST.get('email', '')
+        phone_no = request.POST.get("phone_no", '')
 
         if password != password2:
-            return render("sign_up.html",{"error":"password do not match"})
+            return render(request, "sign_up.html", {"error": "Passwords do not match"})
 
         if CUSTOMUSER.objects.filter(email=email).exists():
-            return render("sign_up.html",{"error":"email already exists"})
+            return render(request, "sign_up.html", {"error": "Email already exists"})
 
-        user = CUSTOMUSER.objects.create_user(
-            username=username,
-            email=email,
-            phone_no=phone_no,
-            password=password
-        )
+        try:
+            user = CUSTOMUSER.objects.create_user(username=username, email=email, password=password)
+            user.phone_no = phone_no  # If phone_no isn't part of create_user()
+            user.save()
+        except Exception as e:
+            print(f"Error creating user: {e}")  # Debugging
+            return render(request, "sign_up.html", {"error": "User creation failed. Try again."})
 
-        login(request,user)
-        return redirect('submit_quiz') # quiz_view will be the view of quizes after signup
+        login(request, user)
+        return redirect('submit_quiz')  # Ensure this matches `urls.py`
 
-    return render(request,"sign_up.html")
+    return render(request, "sign_up.html")
 
 # Changes by RONIN
 @login_required
@@ -79,7 +81,7 @@ def submit_quiz(request):
             skincare_routine=request.POST.get("skincare_routine"),
         )
         messages.success(request, "Quiz submitted successfully!")
-        return redirect("quiz_report")  # Redirect to a report or homepage
+        return redirect("dashboard")  # Redirect to a report or homepage
 
     return render(request, "quiz_form.html")
 #
