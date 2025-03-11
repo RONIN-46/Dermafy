@@ -1,9 +1,8 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout, get_backends
 from .models import *
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse
-from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from .utils import *
 
@@ -52,6 +51,7 @@ def user_signup(request):
             print(f"Error creating user: {e}")  # Debugging
             return render( "sign_up.html", {"error": "User creation failed. Try again."})
 
+        user.backend = get_backends()[0].__class__.__module__ + '.' + get_backends()[0].__class__.__name__
         login(request, user)
         return redirect('submit_quiz')  # Ensure this matches `urls.py`
 
@@ -211,3 +211,5 @@ def reset_password(request):
     
     return render(request, "reset_password.html")
 
+def scan_view(request): #RONIN 
+    return render(request, 'scan.html')

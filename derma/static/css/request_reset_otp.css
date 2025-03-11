@@ -1,0 +1,80 @@
+/* Apply global styles from the login page */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: url('/static/images/bg_flow1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Matching the container style with the login page */
+.container {
+    height: 450px; /* 657px originally*/
+    max-width: 1000px;
+    width: 70%; /* 90% originally*/
+    background-color: #131313;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+.container * {
+    opacity: 1;
+    color: white;
+    padding: 15px;
+}
+
+/* Styling inputs and buttons to match login page */
+input {
+    width: 100%;
+    padding: 15px;
+    background-color: transparent;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+}
+
+input::placeholder {
+    color: #aaa;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #5a52d5;
+}

@@ -78,8 +78,9 @@ body {
 
 .slideshow {
     position: relative;
-    height: 65%;
+    height: 100%;
     overflow: hidden;
+    border-radius: 20px;
 }
 
 .slide {
@@ -97,6 +98,7 @@ body {
 .slide.active {
     opacity: 1;
 }
+
 
 .slide-indicators {
     display: flex;

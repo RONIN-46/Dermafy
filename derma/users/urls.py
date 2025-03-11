@@ -20,4 +20,5 @@ urlpatterns =[
         path("request-reset-otp/", request_reset_otp, name="request_reset_otp"),
         path("verify-reset-otp/", verify_reset_otp, name="verify_reset_otp"),
         path("reset-password/", reset_password, name="reset_password"),
+        path('scan/', scan_view, name='scan'),
         ]
