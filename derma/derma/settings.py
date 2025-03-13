@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',  # Required for allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'users',
     'ML',
 ]
@@ -55,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'derma.urls'
@@ -112,16 +117,6 @@ AUTHENTICATION_BACKENDS = [
     #'allauth.account.auth_backends.AuthenticationBackend', # This was the allauth backend creating issue at viewing admin panel
 ]
 
-SITE_ID = 1
-
-# Google OAuth Settings -RONIN Email setup
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-    }
-}
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -151,15 +146,38 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = '/login/'  
-
+LOGIN_URL = 'user_login'  
+LOGOUT_REDIRECT_URL = "dashboard"
 # Change this to your actual login page URL ( kept for reference we have same login)
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"  # Gmail SMTP server
 EMAIL_PORT = 587  # TLS Port
 EMAIL_USE_TLS = True  # Enable TLS (Secure connection)
-EMAIL_HOST_USER = "ninjabackupmb1@gmail.com"  
+EMAIL_HOST_USER = "dermafyofficial@gmail.com"  
 EMAIL_HOST_PASSWORD = "#"  #security no password
 
 # Default sender email
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+SITE_ID = 1
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        "PROCESS": "login",
+        'OAUTH_PKCE_ENABLED': True,
+    }
+}
+SOCIALACCOUNT_ADAPTER = "users.adapters.MySocialAccountAdapter"
+ACCOUNT_ADAPTER = "users.adapters.MyAccountAdapter"
+ACCOUNT_LOGIN_METHODS = {"email", "username"}  # Allow both username & email
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
+SOCIALACCOUNT_AUTO_SIGNUP = False  # Prevents unwanted automatic signup via OAuth# Redirect if signup fails
+LOGIN_REDIRECT_URL = "/dashboard/"
+
+ACCOUNT_SIGNUP_REDIRECT_URL = "/submit_quiz/"
+SOCIALACCOUNT_LOGIN_ON_GET = True 

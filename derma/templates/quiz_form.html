@@ -1,36 +1,26 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DermaNova: Skin Analysis</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/quiz_form.css' %}">
-</head>
-<body>
-
-<div class="container">
-    <div class="quiz-container" id="quiz">
-        <div class="quiz-header">
-            <h2>Skin Analysis</h2>
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" id="progress-bar"></div>
+<form id="quiz-form" method="post" action="{% url 'submit_quiz' %}">
+    {% csrf_token %}
+    <div class="container">
+        <div class="quiz-container" id="quiz">
+            <div class="quiz-header">
+                <h2>Skin Analysis</h2>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" id="progress-bar"></div>
+                </div>
             </div>
-        </div>
-        <form method="POST" action="{% url 'submit_quiz' %}">
-            {% csrf_token %}
-        <div id="question-container">
-            <p class="question" id="question"></p>
-            <div class="options" id="options"></div>
-        </div>
-        <div class="quiz-footer">
-            <button class="btn" id="next-btn">Next</button>
+            <div id="question-container">
+                <p class="question" id="question"></p>
+                <div class="options" id="options"></div>
+            </div>
+            <div class="quiz-footer">
+                <button class="btn" id="next-btn" type="button">Next</button>
+                <button id="submit-btn" class="btn" type="submit" style="display:none;">Submit</button>
+            </div>
         </div>
     </form>
     </div>
-</div>
+</form>
 
-<script src="{% static 'js/quiz_form_backup.js' %}"></script>
-</body>
-</html>
+<script src="{% static 'js/quiz_form.js' %}"></script>
+

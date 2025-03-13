@@ -1,18 +1,43 @@
+{% load static %}
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Details</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
 
-<div class="container mt-5">
-    <h2>Profile Details</h2>
-    <div class="card">
-        <div class="card-body">
-            <img src="{{ profile.image.url }}" alt="Profile Picture" width="150"><br><br>
-            <strong>Name:</strong> {{ profile.name }}<br>
-            <strong>Age:</strong> {{ profile.age }}<br>
-            <strong>Gender:</strong> {{ profile.gender }}<br><br>
+    <div class="container mt-5">
+        <h2 class="text-center">Profile Details</h2>
+        <div class="card mx-auto" style="width: 350px;">
+            <div class="card-body text-center">
+                <img src="{{ profile.image.url }}" alt="Profile Picture" class="img-fluid rounded-circle" width="150"><br><br>
+                <strong>Name:</strong> {{ profile.name }}<br>
+                <strong>Age:</strong> {{ profile.age }}<br>
+                <strong>Gender:</strong> {{ profile.gender }}<br><br>
 
-            <a href="{% url 'update_profile' profile.pk %}" class="btn btn-warning">Edit Profile</a>
-            <a href="{% url 'delete_profile' profile.pk %}" class="btn btn-danger">Delete Profile</a>
+                <a href="{% url 'update_profile' profile.pk %}" class="btn btn-warning">Edit Profile</a>
+                <a href="{% url 'delete_profile' profile.pk %}" class="btn btn-danger">Delete Profile</a>
+            </div>
         </div>
     </div>
-</div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>
+
 
 
