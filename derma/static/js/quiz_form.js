@@ -1,92 +1,105 @@
-const questions = [
-    { question: "What is your primary skin concern?", options: ["Acne", "Dryness", "Oily skin", "Sensitivity"] },
-    { question: "What is your skin type?", options: ["Oily", "Dry", "Combination", "Normal"] },
-    { question: "How often do you experience breakouts?", options: ["Rarely", "Occasionally", "Frequently", "Severe"] },
-    { question: "How does your skin react to new skincare products?", options: ["No reaction", "Mild redness", "Irritation", "Severe reaction"] },
-    { question: "Do you experience redness or inflammation?", options: ["No", "Sometimes", "Frequently", "Persistent redness"] },
-    { question: "How often do you apply sunscreen?", options: ["Daily", "Only when outside", "Sometimes", "Never"] },
-    { question: "Do you have any skin conditions?", options: ["Eczema", "Psoriasis", "Rosacea", "None"] },
-    { question: "How does your skin feel after washing?", options: ["Comfortable", "Tight", "Oily", "Irritated"] },
-    { question: "How much water do you drink daily?", options: ["Less than 1L", "1-2L", "More than 2L", "I don't track"] },
-    { question: "Do you have dark spots or pigmentation?", options: ["No", "Light spots", "Visible spots", "Severe pigmentation"] }
-];
+document.addEventListener("DOMContentLoaded", function () {
+    const questions = [
+        { name: "primary_skin_concern", question: "What is your primary skin concern?", options: ["Acne", "Dryness", "Oily skin", "Sensitivity"] },
+        { name: "skin_type", question: "What is your skin type?", options: ["Oily", "Dry", "Combination", "Normal"] },
+        { name: "breakout_frequency", question: "How often do you experience breakouts?", options: ["Rarely", "Occasionally", "Frequently", "Severe"] },
+        { name: "reaction_to_skincare", question: "How does your skin react to new skincare products?", options: ["No reaction", "Mild redness", "Irritation", "Severe reaction"] },
+        { name: "redness_inflammation", question: "Do you experience redness or inflammation?", options: ["No", "Sometimes", "Frequently", "Persistent redness"] },
+        { name: "sunscreen_usage", question: "How often do you apply sunscreen?", options: ["Daily", "Only when outside", "Sometimes", "Never"] },
+        { name: "skin_conditions", question: "Do you have any skin conditions?", options: ["Eczema", "Psoriasis", "Rosacea", "None"] },
+        { name: "after_washing_skin_feel", question: "How does your skin feel after washing?", options: ["Comfortable", "Tight", "Oily", "Irritated"] },
+        { name: "water_intake", question: "How much water do you drink daily?", options: ["Less than 1L", "1-2L", "More than 2L", "I don't track"] },
+        { name: "dark_spots_pigmentation", question: "Do you have dark spots or pigmentation?", options: ["No", "Light spots", "Visible spots", "Severe pigmentation"] }
+    ];
 
-let currentQuestionIndex = 0;
-let userResponses = [];
-let selectedOption = null;
+    let currentQuestionIndex = 0;
+    let userResponses = {};  // Store responses
+    let selectedOption = null;
 
-const questionEl = document.getElementById("question");
-const optionsEl = document.getElementById("options");
-const nextBtn = document.getElementById("next-btn");
-const progressBar = document.getElementById("progress-bar");
+    // Get elements
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+    const submitBtn = document.getElementById("submit-btn");
+    const progressBar = document.getElementById("progress-bar");
+    const quizForm = document.getElementById("quiz-form");
 
-function startQuiz() {
-    currentQuestionIndex = 0;
-    userResponses = [];
-    selectedOption = null;
-    nextBtn.disabled = true;
-    showQuestion();
-}
+    function showQuestion() {
+        resetState();
+        const currentQuestion = questions[currentQuestionIndex];
 
-function showQuestion() {
-    resetState();
-    const currentQuestion = questions[currentQuestionIndex];
-    questionEl.textContent = currentQuestion.question;
+        if (!currentQuestion) {
+            console.error("No more questions.");
+            return;
+        }
 
-    currentQuestion.options.forEach(option => {
-        const button = document.createElement("button");
-        button.classList.add("option");
-        button.textContent = option;
-        button.addEventListener("click", () => selectAnswer(button, option));
-        optionsEl.appendChild(button);
-    });
+        questionEl.textContent = currentQuestion.question;
 
-    updateProgressBar();
-}
-
-function resetState() {
-    optionsEl.innerHTML = "";
-    nextBtn.disabled = true;
-    selectedOption = null;
-}
-
-function selectAnswer(button, option) {
-    document.querySelectorAll(".option").forEach(btn => btn.classList.remove("selected"));
-    button.classList.add("selected");
-    selectedOption = option;
-    nextBtn.disabled = false;
-}
-
-function nextQuestion() {
-    if (selectedOption === null) return;
-    
-    userResponses.push(selectedOption);
-    
-    if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-        showQuestion();
-    } else {
-        questionEl.textContent = "Quiz Completed! Thank you for your response.";
-        //optionsEl.innerHTML = `<p>Your results :</p><ul>${userResponses.map(response => `<li>${response}</li>`).join('')}</ul>`;
-        progressBar.style.width = "100%";
-
-        const dashboardBtn = document.createElement("button");
-        dashboardBtn.textContent = "GO TO DASHBOARD";
-        dashboardBtn.classList.add("btn", "dashboard-btn");
-        dashboardBtn.addEventListener("click", () => {
-            window.location.href = "/dashboard/";
+        currentQuestion.options.forEach(option => {
+            const button = document.createElement("button");
+            button.classList.add("option");
+            button.textContent = option;
+            button.setAttribute("type", "button"); // Prevent accidental form submission
+            button.addEventListener("click", () => selectAnswer(button, currentQuestion.name, option));
+            optionsEl.appendChild(button);
         });
-        optionsEl.appendChild(dashboardBtn);
 
-        nextBtn.style.display = "none";
+        updateProgressBar();
     }
-}
 
-function updateProgressBar() {
-    const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
-    progressBar.style.width = `${progress}%`;
-}
+    function resetState() {
+        optionsEl.innerHTML = "";
+        nextBtn.style.display = "block";
+        submitBtn.style.display = "none";
+        selectedOption = null;
+        nextBtn.disabled = true;
+    }
 
-nextBtn.addEventListener("click", nextQuestion);
+    function selectAnswer(button, fieldName, option) {
+        // Remove selected class from all buttons
+        document.querySelectorAll(".option").forEach(btn => btn.classList.remove("selected"));
 
-startQuiz();
+        // Highlight selected option
+        button.classList.add("selected");
+
+        selectedOption = option;
+        userResponses[fieldName] = option;
+        nextBtn.disabled = false;
+    }
+
+    function nextQuestion() {
+        if (!selectedOption) return;
+
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            showQuestion();
+        } else {
+            showSubmitButton();
+        }
+    }
+
+    function showSubmitButton() {
+        nextBtn.style.display = "none";
+        submitBtn.style.display = "block";
+
+        // Ensure all responses are included in the form before submitting
+        Object.keys(userResponses).forEach(field => {
+            if (!quizForm.querySelector(`input[name="${field}"]`)) {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = field;
+                input.value = userResponses[field];
+                quizForm.appendChild(input);
+            }
+        });
+    }
+
+    function updateProgressBar() {
+        const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+        progressBar.style.width = `${progress}%`;
+    }
+
+    nextBtn.addEventListener("click", nextQuestion);
+    showQuestion();
+});
+

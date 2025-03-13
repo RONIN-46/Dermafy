@@ -1,0 +1,10 @@
+{% load socialaccount %}  <!-- Add this at the top -->
+
+<h2>Do you want to connect your Google account?</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <a href="{% provider_login_url 'google' process='connect' next='/submit_quiz/' %}" class="button">Yes, Connect Now</a>
+    <button type="submit" name="skip">Skip for Now</button>
+</form>
+

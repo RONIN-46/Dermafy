@@ -6,10 +6,14 @@ from django.http import HttpResponse
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from .utils import *
+from django.urls import reverse
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 
 
 def home(request):
     return render(request, "index.html")
+
+
 
 def user_login(request):
     if request.method=="POST":
@@ -48,12 +52,11 @@ def user_signup(request):
             user = CUSTOMUSER.objects.create_user(username=username, email=email, password=password)
             user.phone_no = phone_no  # If phone_no isn't part of create_user()
             user.save()
-        except Exception as e:
-            print(f"Error creating user: {e}")  # Debugging
-            return render( "sign_up.html", {"error": "User creation failed. Try again."})
-
+        except Exception as e: # Debugging
+            return render(request, "sign_up.html", {"error": "User creation failed. Try again."})
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
-        return redirect('submit_quiz')  # Ensure this matches `urls.py`
+        return redirect('connect_google')  # Ensure this matches `urls.py`
 
     return render(request, "sign_up.html")
 
@@ -210,4 +213,13 @@ def reset_password(request):
         messages.error(request, "User not found.")
     
     return render(request, "reset_password.html")
+
+def connect_google(request):
+    if request.method == "POST":
+        if "skip" in request.POST:
+            return redirect("submit_quiz")  # Redirect to quiz if skipped
+        return redirect(reverse('socialaccount_login') + "?process=connect&next=" + reverse("submit_quiz"))
+ 
+
+    return render(request, "connect_google.html")
 

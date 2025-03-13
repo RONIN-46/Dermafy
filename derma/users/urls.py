@@ -11,7 +11,7 @@ urlpatterns =[
         path('reports/', reports, name='reports'),
         path('skincare/', skincare, name='skincare'),
         path('consult/', consult, name='consult'),
-        path('dashboard/', login_required(dashboard), name='dashboard'),
+        path('dashboard/', dashboard, name='dashboard'),
         path("submit_quiz/", submit_quiz, name="submit_quiz"),  # Add this line
         path('profile/add/', add_profile, name='add_profile'),
         path('profile/<int:pk>/update/', update_profile, name='update_profile'),
@@ -20,5 +20,6 @@ urlpatterns =[
         path("request-reset-otp/", request_reset_otp, name="request_reset_otp"),
         path("verify-reset-otp/", verify_reset_otp, name="verify_reset_otp"),
         path("reset-password/", reset_password, name="reset_password"),
+        path('connect-google/', connect_google, name='connect_google'),
         
         ]
