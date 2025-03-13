@@ -1,9 +1,8 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout, get_backends
 from .models import *
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse
-from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from .utils import *
 from django.urls import reverse
